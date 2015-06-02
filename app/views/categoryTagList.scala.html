@@ -1,0 +1,40 @@
+@(catTagsList: java.util.List[com.ggg.et3.domain.CategoryTags])
+
+@reportLayout("Tags") {
+
+	<div class="content-center-wide">
+		<table class="tags">
+        
+            <thead>
+	            <tr>
+	            	<th class="tableheader">T A G S</th>
+	            </tr>
+	        </thead>
+            <tbody>
+				@for(cattags <- catTagsList) {
+					<tr>
+						<td class="columnheader">@cattags.getCategory()</td>
+					</tr>
+
+					
+					<tr>
+						<td class="tags">
+		                	@for(tag <- cattags.getTags()) {
+		                   		@tag.getTag()&nbsp<a href="/expenser/tag/@cattags.getCategory()/@tag.getTag()/@tag.getId()?action=delete"><img src="@routes.Assets.at("images/x.png")" id="delete-icon"></a>
+								&nbsp&nbsp
+		                	}
+	                	</td>
+	                </tr>
+                }
+                
+                @if(catTagsList.isEmpty) {
+		        	<tr>
+		        		<td class="tags">empty</td>
+		        	</tr>       	
+		        }
+                
+                </tbody>
+         </table>
+	</div>
+}
+

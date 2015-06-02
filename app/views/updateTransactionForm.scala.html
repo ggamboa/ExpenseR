@@ -1,0 +1,35 @@
+@(tran: com.ggg.et3.jpa.entity.DCTrans, catList: java.util.List[com.ggg.et3.jpa.entity.Category], year: String, month: String)
+
+@dialogLayout("Update Transaction Category") {
+
+  	<form action="/expenser/transaction/doUpdate" method="POST">
+		<table class="readonlyfieldstable">
+			<tr class="readonlyfieldstable">
+			<td  class="readonlyfieldstable" width="50%">Date: @tran.getTransactionDate()
+			<td  class="readonlyfieldstable" width="50%">Amount: @tran.getAmount()
+		</table>
+
+    	<label><span>Description:</span>
+    	<br><input type="text" size="100" name="description" value="@tran.getDescription()">
+		</label>
+		
+    	<label><span>Category:</span>
+    		<select name="category">
+    			@for(c <- catList) {
+  					<option value="@c.getId()"  @if(tran.getCategory().getId() == c.getId()){ SELECTED }>@c.getName()</option>
+				}
+			</select>
+		</label>
+
+		<label><span>Optional - associate the text below to the selected category:</span>
+			<input type="text" size="100" name="tag">
+		</label>
+		<br>
+		<br>
+		<input type="hidden" size="100" value="@tran.getTranId()" name="transaction-id">
+		<input type="submit" value="Submit">&nbsp<a href="/expenser/report/@year/@month">Cancel</a>
+			
+ 	</form>
+
+}
+
