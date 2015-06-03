@@ -12,25 +12,11 @@ public class Global extends GlobalSettings {
     public void onStart(Application app) {
         Logger.info("Application has started");
 
-        CategoryFinderService categoryFinder = CategoryFinderService.getInstance();
-        Logger.info("Category finder service initialized.");
-        
-        //DCTransService dctransSvc = new DCTransService();
-        //DCTransServiceThreadLocal.set(dctransSvc); 
-        
-        //Logger.info("DCTransServiceThreadLocal was set...");
-        
+        //CategoryFinderService categoryFinder = CategoryFinderService.getInstance();
+        //Logger.info("Category finder service initialized.");
     }
 
     public void onStop(Application app) {
         Logger.info("Application shutdown...");
-        
-        //DCTransServiceThreadLocal.get().close();
-        //DCTransServiceThreadLocal.unset();
-        //Logger.info("DCTransServiceThreadLocal was unset...");
     }
-
-
-    
-
 }

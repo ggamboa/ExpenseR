@@ -6,6 +6,12 @@ import java.util.List;
 import com.ggg.et3.jpa.entity.Category;
 import com.ggg.et3.jpa.entity.DCTrans;
 
+/**
+ * This class holds a list of transactions for a given category
+ * It also contains a field that holds the total amount for the list of transactions
+ * @author gg2712
+ *
+ */
 public class CategorySet {
 	
 	private Category category;

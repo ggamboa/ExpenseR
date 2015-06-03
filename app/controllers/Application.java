@@ -30,51 +30,73 @@ public class Application extends Controller {
 
 	public static Result index() {
 		
-Session session = Http.Context.current().session();
+		Session session = Http.Context.current().session();
     	
     	String month = session.get("currentMonth");
     	String year = session.get("currentYear");
     	
-    	if(month != null && year != null) {
-    		return redirect("/expenser/report/" + year + "/" + month);
+    	YearMonth yearMonth = null;
+    	if(year != null && month != null) {
+	    	try {
+	    		int yr = Integer.parseInt(year);
+	    		int mo = Integer.parseInt(month);
+	    		yearMonth = new YearMonth(yr, mo);
+	    		
+	    	}
+	    	catch(Exception e) {
+	    		YearMonthAvailable yma = YearMonthAvailable.getInstance();
+	    		yearMonth = yma.getLatest();
+	    		
+	    	}
     	}
-    	else {
+    	
+    	
+    	if (yearMonth == null) {
     		YearMonthAvailable yma = YearMonthAvailable.getInstance();
-    		YearMonth ym = yma.getLatest();
-    		if(ym != null) {
-    			return redirect("/expenser/report/" + ym.getYear() + "/" + ym.getMonthCode());
-    		}
-    		else {
-    			return redirect("/expenser/report/2015/12");
+    		yearMonth = yma.getLatest();
+    		
+    		if(yearMonth == null) {
+    			return notFound("No report found!");
     		}
     	}
+
+   		return displayReport(yearMonth.toString());
+
 	}
+	
 	
     public static Result displayReport(String yrMo) {
     	
     	YearMonth yearMonth = null;
+    	
+    	if(yrMo == null) {
+    		return index();
+    	}
+    	else {
+    		try {
+        		yearMonth = new YearMonth(yrMo);
+        	}
+        	catch(Exception e) {
+        		return notFound();
+        	}
+    	}
+    	
     	try {
     		yearMonth = new YearMonth(yrMo);
-    		return redirect("/expenser/report/" + yearMonth.getYear() + "/" + yearMonth.getMonthCode());
     	}
     	catch(Exception e) {
-    		return notFound();
+    		return notFound("No report found!");
     	}
-    }
-    
-    public static Result deleteCategory(int id) {
-    	return status(NOT_IMPLEMENTED, views.html.notImplemented.render());
-    }
- 
-    
-    public static Result displayReport2(int year, int month) {
     	
-    	Session session = Http.Context.current().session();
     	
+    	int year = yearMonth.getYear();
+    	int month = yearMonth.getMonthCode();
+
     	if(month < 1 || month > 12) {
-    		return notFound();
+    		return notFound("Not found - invalid month value: " + month);
     	}
 
+    	Session session = Http.Context.current().session();
     	session.put("currentMonth", Integer.toString(month));
     	session.put("currentYear", Integer.toString(year));
     	
@@ -87,71 +109,13 @@ Session session = Http.Context.current().session();
 		List<CategorySet> catList = report.getAsList();
 		
 		if (catList.size() > 0) {
-			return ok(views.html.report.render(catList, YearMonthAvailable.getInstance().getYearMonthList(), new YearMonth(year, month), report.getTotalExpenses()));
+			return ok(views.html.report.render(catList, YearMonthAvailable.getInstance().getYearMonthList(), yearMonth, report.getTotalExpenses()));
 		}
 		else {
 			return notFound();
 		}    	
-
     }
-    
-    public static Result displayCategories() {
-    	
-    	Session session = Http.Context.current().session();
-    	
-    	String month = session.get("currentMonth");
-    	String year = session.get("currentYear");
-    	
-    	CategoryService cs = CategoryService.getInstance(); 
-		List<Category> list = cs.find();
-		
-		
-		if (list.size() > 0) {
-			return ok(views.html.categoryList.render(list));
-		}
-		else {
-			return notFound();
-		}    	
-
-    }
-       
-    public static Result displayTags() {
-    	
-    	Session session = Http.Context.current().session();
-    	
-    	String month = session.get("currentMonth");
-    	String year = session.get("currentYear");
-
-    	CategoryTagsSet cts = new CategoryTagsSet();
-    	List<CategoryTags> list = cts.getCategoryTagsList();
-    	
- 		if (list.size() > 0) {
-			return ok(views.html.categoryTagList.render(list));
-		}
-		else {
-			return ok(views.html.categoryTagList.render(list));
-			//return notFound();
-		}    	
-
-    }
-
-    public static Result createDeleteTagScreen(String category, String tag, int id) {
-    	Session session = Http.Context.current().session();
-    	
-    	
-   	   	return ok(views.html.deleteTagConfirmationScreen.render(category, tag, id));
-
-    }  
-
-    @BodyParser.Of(BodyParser.FormUrlEncoded.class)
-    public static Result doDeleteTag(int id) {
-    	
-    	CategoryTagService cts = CategoryTagService.getInstance();
-    	
-   		cts.delete(id);
-
-    	return redirect("/expenser/tags");
-    }
+	
     
     public static Result createUpdateTransactionForm(int id) {
     	Session session = Http.Context.current().session();
@@ -161,29 +125,9 @@ Session session = Http.Context.current().session();
     	
     	DCTransService ts = DCTransService.getInstance();
     	DCTrans tran = ts.findById(id);
-    	return ok(views.html.updateTransactionForm.render(tran, CategoryList.getInstance().getList(), year, month ));
+    	return ok(views.html.updateTransactionForm.render(tran, CategoryList.getInstance().getList()));
     }
   
-
-    
-    public static Result createDeleteOrUpdateCategoryForm(int id, String action) {
-    	Session session = Http.Context.current().session();
-    	
-    	CategoryService cs = CategoryService.getInstance();
-    	Category cat = cs.find(id);
-    	
-    	if (action.equalsIgnoreCase("update")) {
-    		return ok(views.html.updateCategoryForm.render(cat));
-    	}
-    	else {
-    	   	return ok(views.html.deleteCategoryConfirmationForm.render(cat));
-    	}
-    }  
-    
-    public static Result createAddCategoryForm() {
-    	return ok(views.html.addCategoryForm.render());
-    }  
-    
     
     @BodyParser.Of(BodyParser.FormUrlEncoded.class)
     public static Result doUpdateTransaction() {
@@ -191,94 +135,51 @@ Session session = Http.Context.current().session();
     	RequestBody body = request().body();
     	Map<String, String[]> formMap = body.asFormUrlEncoded();
     	
-    	String[] descriptionArr = formMap.get("description");  
-    	String description = descriptionArr[0];   
+    	String[] dArr = formMap.get("description");  
+    	String description = "";
+    	if(dArr.length > 0) {
+    		description = dArr[0];   
+    	}
     	
-    	String[] tranIdArr = formMap.get("transaction-id");  
-    	int tranId = Integer.parseInt(tranIdArr[0]);   
-    	
-    	String[] categoryIdArr = formMap.get("category");
-    	int categoryId = Integer.parseInt(categoryIdArr[0]);
-    	
-    	//String[] yrmoArr = formMap.get("yearMonth");
-    	//String yrmo = yrmoArr[0];
-    	
-    	DCTransService ds = DCTransService.getInstance();
-    	ds.updateCategory(tranId, categoryId);
-    	
-     	
-    	Session session = Http.Context.current().session();
-    	
-    	String year = session.get("currentYear");
-    	String month = session.get("currentMonth");
+    	String[] tArr = formMap.get("transaction-id");  
+    	int tranId = 0;
+    	if (tArr.length > 0) {
+    		try {
+    			tranId = Integer.parseInt(tArr[0]);
+    		}
+    		catch(Exception e) {}
+    	}
 
-    	//add tag if provided
-    	String[] tagArr = formMap.get("tag");
-    	if (tagArr.length > 0 && tagArr[0] != null && tagArr[0].trim().length() > 0) {
-    		//CategoryFinderService cfs = CategoryFinderService.getInstance();
-    		CategoryFinder cfs = CategoryFinder.getInstance();
-    		cfs.addTag(categoryId, tagArr[0]);
-    		try{
-    			cfs.updateTransactionCategory(new YearMonth(Integer.parseInt(year), Integer.parseInt(month)));
+    	String[] ciArr = formMap.get("category");
+    	int categoryId = 0;
+    	if (ciArr.length > 0) {
+    		try {
+    			categoryId = Integer.parseInt(ciArr[0]);
     		}
     		catch(Exception e) {}
     	}
     	
-    	return redirect("/expenser/report/" + year + "/" + month);
-    }
-    
-    @BodyParser.Of(BodyParser.FormUrlEncoded.class)
-    public static Result doDeleteOrUpdateCategory(int id, String action) {
-    	
-    	CategoryService cs = CategoryService.getInstance();
-    	
-    	if (action.equalsIgnoreCase("Update")) {
+    	DCTransService ds = DCTransService.getInstance();
+    	ds.updateCategory(tranId, categoryId);
+     	
+    	// Is tag provided in the form
+    	String[] tagArr = formMap.get("tag");
+    	if (tagArr.length > 0 && tagArr[0] != null && tagArr[0].trim().length() > 0) {
+
+    		//Add it to categoryFinder cache and permanent table
+    		CategoryFinder cfs = CategoryFinder.getInstance();
+    		cfs.addTag(categoryId, tagArr[0]);
     		
-        	RequestBody body = request().body();
-        	Map<String, String[]> formMap = body.asFormUrlEncoded();
-        	
-        	String categoryName = "";
-        	String[] categoryNameArr = formMap.get("category-name");  
-        	if (categoryNameArr.length > 0) {
-        		categoryName = categoryNameArr[0]; 
-        	}
-        	
-        	cs.update(id, categoryName);
-    	}
-    	else {
-    		DCTransService ds = DCTransService.getInstance();
-    		int count = ds.countForCategory(id);
-    		
-    		
-    		if(count > 0) {
-    			String catName = cs.find(id).getName();
-    			return status(BAD_REQUEST, views.html.errorPage.render("Cannot delete category " + catName + " because one or more transactions are assigned to it. ", "Back to categories.", "/expenser/categories"));
+    		//Update all transactions with category associated for the tag 
+    		try{
+    			cfs.updateTransactionCategory();
     		}
-    		
-    		cs.delete(id);
+    		catch(Exception e) {
+    			return status(400, "Error updating transactions!");
+    		}
     	}
-    	return redirect("/expenser/categories");
+    	
+    	return redirect("/expenser/report");
     }
 
-    @BodyParser.Of(BodyParser.FormUrlEncoded.class)
-    public static Result doAddCategory() {
-    	
-    	CategoryService cs = CategoryService.getInstance();
-    	
-    	RequestBody body = request().body();
-    	Map<String, String[]> formMap = body.asFormUrlEncoded();
-    	
-    	String categoryName = "";
-    	String[] categoryNameArr = formMap.get("category-name");  
-    	if (categoryNameArr.length > 0) {
-    		categoryName = categoryNameArr[0]; 
-    	}
-    	
-    	Category cat = new Category(categoryName);
-    	
-    	cs.create(cat);
-
-    	return redirect("/expenser/categories");
-    }    
-    
 }

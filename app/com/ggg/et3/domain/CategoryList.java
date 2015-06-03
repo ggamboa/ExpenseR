@@ -5,6 +5,12 @@ import java.util.List;
 import com.ggg.et3.jpa.entity.Category;
 import com.ggg.et3.jpa.service.CategoryService;
 
+/**
+ * This class is used to hold a list of Categories defined in the table category
+ * This is used in the display categories view 
+ * @author gg2712
+ *
+ */
 public class CategoryList {
 	
 	private static CategoryList instance;

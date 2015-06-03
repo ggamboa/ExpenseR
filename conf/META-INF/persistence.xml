@@ -13,7 +13,8 @@
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:c:/gilbert/db/expenses.db" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:expenses.db" />
+			<!-- property name="javax.persistence.jdbc.url" value="jdbc:sqlite:c:/gilbert/db/expenses.db" /-->
 			<property name="eclipselink.ddl-generation" value="create-tables" />
 			<!-- property name="eclipselink.ddl-generation" value="drop-and-create-tables" /-->
 			<!-- property name="eclipselink.ddl-generation" value="none" / -->

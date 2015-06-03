@@ -158,8 +158,6 @@ public class CategoryService {
 		cat = new Category("Home Insurance/Tax");
 		cs.create(cat);
 
-		
-		//System.out.println(cs.find(4));
 	}
 	
 }

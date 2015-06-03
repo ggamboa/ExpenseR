@@ -102,14 +102,6 @@ public class CategoryTagService {
 		for( CategoryTag tag : list) {
 			System.out.println(tag);
 		}
-		
-		
-		//CategoryTag ct;
-		//Category cat = CategoryService.getInstance().find(22);
-		//ct = new CategoryTag(cat, "SAFEWAY");
-		//cts.create(ct);
-		
-		
 
 	}
 }

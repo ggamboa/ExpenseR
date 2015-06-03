@@ -3,6 +3,11 @@ package com.ggg.et3.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to hold a list of tags for a given category
+ * @author gg2712
+ *
+ */
 public class CategoryTags {
 	private String category;
 	private List<Tag> tagList;

@@ -1,7 +1,5 @@
 package com.ggg.et3.domain;
 
-import com.ggg.et3.jpa.entity.Category;
-
 public class Tag {
 	
 	private int id;
@@ -36,8 +34,4 @@ public class Tag {
 		return "Tag [id=" + id + ", tag=" + tag + ", category=" + category
 				+ "]";
 	}
-
-
-	
-
 }

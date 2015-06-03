@@ -18,6 +18,12 @@ import com.ggg.et3.domain.YearMonth;
 import com.ggg.et3.jpa.entity.DCTrans;
 import com.ggg.et3.jpa.service.DCTransService;
 
+
+/**
+ * Not used - replaced by CategoryFinder
+ * @author gg2712
+ *
+ */
 public class CategoryFinderService {
 	
 	private static CategoryFinderService instance;

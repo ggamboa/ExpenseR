@@ -8,6 +8,12 @@ import com.ggg.et3.jpa.entity.CategoryTag;
 import com.ggg.et3.jpa.service.CategoryService;
 import com.ggg.et3.jpa.service.CategoryTagService;
 
+/**
+ * This class holds a list of CategoryTags which holds a list of tags per Category
+ * Used in display tags view
+ * @author gg2712
+ *
+ */
 public class CategoryTagsSet {
 	
 	private List<CategoryTags> ctList;

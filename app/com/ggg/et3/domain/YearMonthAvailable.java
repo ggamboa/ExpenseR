@@ -14,6 +14,7 @@ public class YearMonthAvailable {
 	
 	private static YearMonthAvailable instance;
 	private Set<YearMonth> theSet;
+	private YearMonth latestYearMonth;
 	
 	public static YearMonthAvailable getInstance() {
 		if(instance == null) {
@@ -44,12 +45,12 @@ public class YearMonthAvailable {
 			
 			int mo = DateUtils.getMonth(t.getTransactionDate());
 			int yr = DateUtils.getYear(t.getTransactionDate());
-			//System.out.println(t);
 			YearMonth yrmo = new YearMonth(yr, mo);
 			add(yrmo);
 		}
 	}
 	
+	/**********************
 	public void display() {
 		
 		Iterator<YearMonth> iter = theSet.iterator();
@@ -57,26 +58,24 @@ public class YearMonthAvailable {
 			System.out.println("=>" + iter.next());
 		}
 	}
+	**/
 	
 	public List<YearMonth> getYearMonthList() {
 		
 		List<YearMonth> list = new ArrayList<YearMonth>();
 		Iterator<YearMonth> iter = theSet.iterator();
 		while(iter.hasNext()) {
-			list.add(iter.next());
+			latestYearMonth = iter.next();
+			list.add(latestYearMonth);
 		}
 		return list;
 	}
 	
 	public YearMonth getLatest() {
-		List<YearMonth> list = new ArrayList<YearMonth>();
-		Iterator<YearMonth> iter = theSet.iterator();
-		YearMonth ret = null;
-		while(iter.hasNext()) {
-			ret = iter.next();
+		if(latestYearMonth == null) {
+			getYearMonthList();
 		}
-		return ret;
-		
+		return latestYearMonth;
 	}
 	
 

@@ -13,14 +13,15 @@
             <tbody>
 				@for(cattags <- catTagsList) {
 					<tr>
-						<td class="columnheader">@cattags.getCategory()</td>
+						<!--td class="columnheader">@cattags.getCategory()</td-->
+						<td class="tagcolumnheader">@cattags.getCategory()</td>
 					</tr>
 
 					
 					<tr>
 						<td class="tags">
 		                	@for(tag <- cattags.getTags()) {
-		                   		@tag.getTag()&nbsp<a href="/expenser/tag/@cattags.getCategory()/@tag.getTag()/@tag.getId()?action=delete"><img src="@routes.Assets.at("images/x.png")" id="delete-icon"></a>
+		                   		@tag.getTag()&nbsp<a href="/expenser/tag/@tag.getId()?action=delete"><img src="@routes.Assets.at("images/x.png")" id="delete-icon"></a>
 								&nbsp&nbsp
 		                	}
 	                	</td>

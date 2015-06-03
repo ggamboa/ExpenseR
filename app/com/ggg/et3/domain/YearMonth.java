@@ -3,7 +3,9 @@ package com.ggg.et3.domain;
 public class YearMonth implements Comparable<YearMonth> {
 	
 	private int year;
+	private int mo;
 	private Month month;
+	
 	
 	public YearMonth(String sYearMonth) throws Exception{
 		String[] s = sYearMonth.split("-");
@@ -12,6 +14,8 @@ public class YearMonth implements Comparable<YearMonth> {
 		if (month == null) throw new InstantiationException("Invalid month string");
 	}
 	
+	
+
 	private Month translate(String s) {
 		Month month;
 		switch(s) {
@@ -44,15 +48,19 @@ public class YearMonth implements Comparable<YearMonth> {
 		}
 		return month;
 	}
+
 	
+	/**
 	public YearMonth(int yr, Month mo) {
 		year = yr;
 		month = mo;
 	}
+	*/
 	
 	public YearMonth(int yr, int mo) {
 		
 		year = yr;
+		this.mo = mo;
 		
 		switch(mo) {
 			case 1: month = Month.JANUARY;
@@ -87,7 +95,7 @@ public class YearMonth implements Comparable<YearMonth> {
 	public String toString() {
 		return Integer.toString(year) + "-" + month;
 	}
-
+	
 	public String getMonthYearString() {
 		return month + " " + Integer.toString(year);
 	}
@@ -96,9 +104,11 @@ public class YearMonth implements Comparable<YearMonth> {
 		return year;
 	}
 
+	/**
 	public Month getMonth() {
 		return month;
 	}
+	*/
 	
 	public int getMonthCode() {
 		return month.getMonthCode();
@@ -131,8 +141,7 @@ public class YearMonth implements Comparable<YearMonth> {
 
 	@Override
 	public int compareTo(YearMonth that) {
-		// TODO Auto-generated method stub
-		
+
 		if(this.year < that.year) return -1;
 		else {
 			if(this.year > that.year) return 1;
@@ -147,11 +156,5 @@ public class YearMonth implements Comparable<YearMonth> {
 		}
 
 	}
-	
-	public static void main(String[] args) {
-		YearMonth yrmo = new YearMonth(2015, Month.APRIL);
-		YearMonth yrmo2 = new YearMonth(2015, Month.MAY);
-		System.out.println(yrmo + " and " + yrmo2 + " equal? " + yrmo.equals(yrmo2));
-		
-	}
+
 }

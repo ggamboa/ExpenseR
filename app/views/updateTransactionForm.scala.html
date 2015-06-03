@@ -1,4 +1,4 @@
-@(tran: com.ggg.et3.jpa.entity.DCTrans, catList: java.util.List[com.ggg.et3.jpa.entity.Category], year: String, month: String)
+@(tran: com.ggg.et3.jpa.entity.DCTrans, catList: java.util.List[com.ggg.et3.jpa.entity.Category])
 
 @dialogLayout("Update Transaction Category") {
 
@@ -27,7 +27,7 @@
 		<br>
 		<br>
 		<input type="hidden" size="100" value="@tran.getTranId()" name="transaction-id">
-		<input type="submit" value="Submit">&nbsp<a href="/expenser/report/@year/@month">Cancel</a>
+		<input type="submit" value="Submit">&nbsp<a href="/expenser/report">Cancel</a>
 			
  	</form>
 

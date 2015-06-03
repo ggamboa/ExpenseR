@@ -59,8 +59,4 @@ public class CategoryTag {
 		return "CategoryTag [id=" + id + ", category=" + category + ", tag="
 				+ tag + "]";
 	}
-
-
-
-	
 }

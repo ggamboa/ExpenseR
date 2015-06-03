@@ -2,25 +2,25 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /expenser                   		controllers.Application.index()
-GET		/expenser/report					controllers.Application.displayReport(yearMonth: String ?= null)
-GET		/expenser/report/:yyyy/:mm			controllers.Application.displayReport2(yyyy: Int, mm: Int)
-#
-GET 	/expenser/transaction/:id			controllers.Application.createUpdateTransactionForm(id: Int)
-POST	/expenser/transaction/doUpdate		controllers.Application.doUpdateTransaction()
+# Report page
+GET     /expenser                   			controllers.Application.index()
+GET		/expenser/report						controllers.Application.displayReport(yearMonth: String ?= null)
 
-#
-GET 	/expenser/categories				controllers.Application.displayCategories()
-GET 	/expenser/category/:id				controllers.Application.createDeleteOrUpdateCategoryForm(id: Int, action: String)
-GET 	/expenser/category					controllers.Application.createAddCategoryForm()
-POST 	/expenser/category					controllers.Application.doAddCategory()
-POST 	/expenser/category/:id/:action		controllers.Application.doDeleteOrUpdateCategory(id: Int, action: String)
+# Update a transaction - can only change category
+GET 	/expenser/transaction/:id				controllers.Application.createUpdateTransactionForm(id: Int)
+POST	/expenser/transaction/doUpdate			controllers.Application.doUpdateTransaction()
 
-#
-GET		/expenser/tags						controllers.Application.displayTags()
-GET		/expenser/tag/:categoryName/:tag/:id	controllers.Application.createDeleteTagScreen(categoryName: String, tag: String, id: Int)
-POST	/expenser/tag/delete/:id				controllers.Application.doDeleteTag(id: Int)
+# Categories
+GET 	/expenser/categories					controllers.CategoryContoller.displayCategories()
+GET 	/expenser/category/:id					controllers.CategoryContoller.createDeleteOrUpdateCategoryForm(id: Int, action: String)
+GET 	/expenser/category						controllers.CategoryContoller.createAddCategoryForm()
+POST 	/expenser/category						controllers.CategoryContoller.doAddCategory()
+POST 	/expenser/category/:id/:action			controllers.CategoryContoller.doDeleteOrUpdateCategory(id: Int, action: String)
+
+# Tags
+GET		/expenser/tags							controllers.TagController.displayTags()
+GET		/expenser/tag/:id						controllers.TagController.createDeleteTagScreen(id: Int)
+POST	/expenser/tag/delete/:id				controllers.TagController.doDeleteTag(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /expenser/assets/*file              controllers.Assets.at(path="/public", file)
+GET     /expenser/assets/*file              	controllers.Assets.at(path="/public", file)

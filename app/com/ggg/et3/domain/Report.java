@@ -1,6 +1,7 @@
 package com.ggg.et3.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,11 +9,19 @@ import java.util.Map;
 
 import com.ggg.et3.jpa.entity.DCTrans;
 
+/**
+ * This class is used to hold the data for the report
+ * It will load a list of transactions for the current reporting period
+ * The load routine adds each transcation to a CategorySet - a set that contains transactions with similar category
+ * The CategorySet's are stored in a Hashmap for retrieval by key which is the category name
+ * @author gg2712
+ *
+ */
 public class Report {
 	
 	private YearMonth yearMonth;
 	private Map<String, CategorySet> map;
-	List<CategorySet> listCat; 
+	private List<CategorySet> listCat; 
 	private double totalExpenses=0;
 	
 	public Report(YearMonth yearMonth) {
@@ -25,6 +34,12 @@ public class Report {
 		map = new HashMap<String, CategorySet>(20);
 	}
 	
+	/**
+	 * First retrieve CategorySet based on category name from hashmap
+	 * If not found, create new category set and add to hashmap
+	 * Add transaction to the the CategorySet (new or retrieved from hashmap)
+	 * @param t
+	 */
 	private void add(DCTrans t) {
 		CategorySet set = map.get(t.getCategory().getName());
 		
@@ -36,62 +51,47 @@ public class Report {
 		
 	}
 	
+	/**
+	 * Load each transaction to a CategorySet
+	 * @param list
+	 */
 	public void load(List<DCTrans> list) {
 		
 		for(DCTrans t : list) {
 			add(t);
 		}
 		
-		listCat = new ArrayList<CategorySet>();
+		
+		// Save key set of hash map into a sorted list (report will be sorted by category)
 		Iterator<String> iter = map.keySet().iterator();
 		
+		List<String> categoryList = new ArrayList<String>();
 		while (iter.hasNext()) {
-			CategorySet set = map.get(iter.next());
+			categoryList.add(iter.next());
+		}
+		
+		Collections.sort(categoryList);
+		
+		
+		// Save the CategorySets in a list and compute total amount for the report (Sum of all category sub total)		
+		
+		listCat = new ArrayList<CategorySet>();
+		
+		for(String cat : categoryList) {
+			CategorySet set = map.get(cat);
 			listCat.add(set);
 			
 			if(!set.getCategory().getName().startsWith("*")) {
 				totalExpenses += set.getCategoryTotal();
 			}
-			
-		}
-	}
-	
-	public void display() {
-		
-		System.out.println("Report for: " + yearMonth);
-		
-		Iterator<String> iter = map.keySet().iterator();
-		
-		while (iter.hasNext()) {
-			
-			CategorySet set = map.get(iter.next());
-			
-			List<DCTrans> tList = set.getTranList();
-			
-			System.out.println("List of trans for: " + set.getCategory());
-			for(DCTrans t : tList) {
-				System.out.println(t);
-			}
-			System.out.println("Total for category " + set.getCategory().getName() + " : " + set.getCategoryTotal());
-			
 		}
 	}
 	
 	public List<CategorySet> getAsList() {
-		
-		/**List<CategorySet> listCat = new ArrayList<CategorySet>();
-		Iterator<String> iter = map.keySet().iterator();
-		
-		while (iter.hasNext()) {
-			CategorySet set = map.get(iter.next());
-			listCat.add(set);
-		}*/
 		return listCat;
 	}
 	
 	public double getTotalExpenses() {
 		return totalExpenses;
 	}
-	
-
 }
