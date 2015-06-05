@@ -75,7 +75,7 @@ public class CategoryFinder {
 		for(DCTrans t : list) {
 			int catId = findCategory(t.getDescription());
 			if (catId > 0 ) {
-				ds.updateCategory(t.getTranId(), catId);
+				ds.update(t.getTranId(), catId, "");
 			}
 		}
 	}

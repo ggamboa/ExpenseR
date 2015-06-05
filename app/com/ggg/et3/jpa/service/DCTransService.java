@@ -157,7 +157,7 @@ public class DCTransService {
 		return tran;
 	}
 	
-	public DCTrans updateCategory(int id, Category cat) {
+	public DCTrans update(int id, Category cat, String desc) {
 		
 		EntityManager em = emFac.createEntityManager();
 		
@@ -166,8 +166,10 @@ public class DCTransService {
 		DCTrans tran = em.find(DCTrans.class, id);
 		
 		if (tran != null) {
-			System.out.println("Before update: " + tran);
 			tran.setCategory(cat);
+			if(desc != null && desc.trim().length() > 0) {
+				tran.setDescription(desc);
+			}
 			tran.setLastUpdatedate(new Timestamp(new Date().getTime()));
 		}
 		
@@ -177,7 +179,7 @@ public class DCTransService {
 		return tran;
 	}
 	
-	public DCTrans updateCategory(int id, int categoryId) {
+	public DCTrans update(int id, int categoryId, String desc) {
 		
 		EntityManager em = emFac.createEntityManager();
 		
@@ -186,7 +188,7 @@ public class DCTransService {
 		
 		em.close();
 		
-		return updateCategory(id, newcat);
+		return update(id, newcat, desc.trim());
 	}
 	
 	public static void main(String[] args) {

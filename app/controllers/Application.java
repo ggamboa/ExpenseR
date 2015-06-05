@@ -77,17 +77,9 @@ public class Application extends Controller {
         		yearMonth = new YearMonth(yrMo);
         	}
         	catch(Exception e) {
-        		return notFound();
+        		return notFound("No report found!");
         	}
     	}
-    	
-    	try {
-    		yearMonth = new YearMonth(yrMo);
-    	}
-    	catch(Exception e) {
-    		return notFound("No report found!");
-    	}
-    	
     	
     	int year = yearMonth.getYear();
     	int month = yearMonth.getMonthCode();
@@ -118,10 +110,6 @@ public class Application extends Controller {
 	
     
     public static Result createUpdateTransactionForm(int id) {
-    	Session session = Http.Context.current().session();
-    	
-    	String year = session.get("currentYear");
-    	String month = session.get("currentMonth");
     	
     	DCTransService ts = DCTransService.getInstance();
     	DCTrans tran = ts.findById(id);
@@ -160,9 +148,9 @@ public class Application extends Controller {
     	}
     	
     	DCTransService ds = DCTransService.getInstance();
-    	ds.updateCategory(tranId, categoryId);
+    	ds.update(tranId, categoryId, description);
      	
-    	// Is tag provided in the form
+    	// Is tag provided in the form?
     	String[] tagArr = formMap.get("tag");
     	if (tagArr.length > 0 && tagArr[0] != null && tagArr[0].trim().length() > 0) {
 
