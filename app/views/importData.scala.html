@@ -1,0 +1,33 @@
+@(message: java.lang.String)
+
+@manageDataLayout("Import Data") {
+
+  	<div>
+  		<form action="/expenser/uploadfile" method="POST" class="coolform-narrow" enctype="multipart/form-data">
+
+			Source:
+			<select name="data-source">
+				<option value=""  SELECTED >Please select a source</option>
+				<option value="test" >Test</option>
+				<option value="Citibank MC" >Citibank MC</option>
+				<option value="Wells Fargo Checking" >Wells Fargo Checking</option>
+				<option value="Wells Fargo Visa" >Wells Fargo Visa</option>
+			</select>
+			
+			<label>
+			<input type="file" id="files" name="data-file" />
+			</label>
+			
+			<br>
+			<input type="submit" class="right-button" value="Submit">
+			
+			@if(!message.isEmpty()){ 
+				<br>
+				<br>
+				<span class="message">@message</span>
+			}
+		</form>
+    </div>
+
+}
+

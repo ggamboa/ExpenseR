@@ -212,11 +212,12 @@ label {
 }
 
 input {
-	border-radius: 3px;
 	height: 18px;
 	border: 1px solid #AAA;
 	padding: 0 7px;
 }
+
+
 
 /*
 input.large {
@@ -237,11 +238,21 @@ select {
 	background: #EEEED1;
 	width:650px;
 	line-height: 24px;
-	padding:20px;
+	padding:30px;
 	border: 1px solid #999;
 	border: inset 1px solid #333;
 }
 
+.coolform-narrow    {
+	margin:auto;
+	position:relative;
+	background: #EEEED1;
+	width:550px;
+	line-height: 24px;
+	padding:30px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+}
 
 .readonlyfieldstable {
 	border: 0;
@@ -261,4 +272,26 @@ select {
 	height: 12px;
 	width: 12px;
 
+}
+
+
+/* version 1.1 */
+
+#files {
+	border: 0;
+	padding: 0 0 0 0;
+	font-size: 12px;
+}
+
+.message {
+	background-color: #FFF68F;
+	color: #000;
+	font-size: 13px;
+	font-style: bold;
+
+}
+
+.right-button {
+	float: right;
+ 
 }

@@ -1,5 +1,6 @@
 import com.ggg.et3.global.DCTransServiceThreadLocal;
 import com.ggg.et3.jpa.service.DCTransService;
+import com.ggg.et3.tagutil.CategoryFinder;
 import com.ggg.et3.tagutil.CategoryFinderService;
 
 import play.*;
@@ -12,8 +13,10 @@ public class Global extends GlobalSettings {
     public void onStart(Application app) {
         Logger.info("Application has started");
 
-        //CategoryFinderService categoryFinder = CategoryFinderService.getInstance();
-        //Logger.info("Category finder service initialized.");
+        Logger.info("CategoryFinder will update all uncategorized transactions based on existing tags now.");
+        CategoryFinder cfs = CategoryFinder.getInstance();
+ 		cfs.updateTransactionCategory();
+
     }
 
     public void onStop(Application app) {

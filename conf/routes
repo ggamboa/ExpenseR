@@ -22,5 +22,9 @@ GET		/expenser/tags							controllers.TagController.displayTags()
 GET		/expenser/tag/:id						controllers.TagController.createDeleteTagScreen(id: Int)
 POST	/expenser/tag/delete/:id				controllers.TagController.doDeleteTag(id: Int)
 
+# Tags
+GET		/expenser/import						controllers.DataController.importData()
+POST	/expenser/uploadfile					controllers.DataController.processFile()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /expenser/assets/*file              	controllers.Assets.at(path="/public", file)

@@ -60,6 +60,9 @@ public class DCTransService {
 		em.close();
 	}
 	
+	public void load(List<DCTrans> list) {
+		
+	}
 	
 	public List<DCTrans> findAllDebits() {
 		

@@ -27,6 +27,10 @@ public class YearMonthAvailable {
 		return instance;
 	}
 	
+	public static void refresh() {
+		instance = new YearMonthAvailable();
+	}
+	
 	private YearMonthAvailable() {
 		theSet = new TreeSet<YearMonth>(); 
 		load();
